@@ -1,0 +1,101 @@
+﻿subgrp_id,disease_id,disease_name
+S101,110001,Head banging
+S102,110002,Breast cancer
+S106,110003,Anthrax
+S108,110004,Sunbathing
+S105,110005,Whiplash
+S109,110006,Bladder cancer
+S109,110007,Dengue
+S103,110008,Head banging
+S108,110009,Suicide
+S108,110010,Food allergy
+S104,110011,Head banging
+S104,110012,Head banging
+S108,110013,Food allergy
+S110,110014,Head banging
+S101,110015,Sunbathing
+S109,110016,Sunbathing
+S101,110017,Kidney cancer
+S104,110018,Breast cancer
+S110,110019,Kidney cancer
+S106,110020,Dengue
+S109,110021,Head banging
+S105,110022,Whiplash
+S102,110023,Bladder cancer
+S107,110024,Breast cancer
+S103,110025,Anthrax
+S101,110026,Suicide
+S110,110027,Food allergy
+S108,110028,Drug consumption
+S104,110029,Bladder cancer
+S101,110030,Drug consumption
+S101,110031,Food allergy
+S105,110032,Head banging
+S104,110033,Dengue
+S105,110034,Bladder cancer
+S105,110035,Bladder cancer
+S109,110036,Anthrax
+S107,110037,Suicide
+S109,110038,Sunbathing
+S103,110039,Drug consumption
+S110,110040,Drug consumption
+S107,110041,Bladder cancer
+S105,110042,Bladder cancer
+S104,110043,Drug consumption
+S109,110044,Kidney cancer
+S104,110045,Breast cancer
+S106,110046,Sunbathing
+S102,110047,Kidney cancer
+S110,110048,Bladder cancer
+S104,110049,Food allergy
+S104,110050,Galactosemia
+S103,110051,Sunbathing
+S106,110052,Food allergy
+S106,110053,Bladder cancer
+S105,110054,Breast cancer
+S101,110055,Suicide
+S110,110056,Head banging
+S109,110057,Head banging
+S105,110058,Suicide
+S103,110059,Whiplash
+S106,110060,Anthrax
+S103,110061,Sunbathing
+S106,110062,Galactosemia
+S107,110063,Suicide
+S101,110064,Head banging
+S110,110065,Sunbathing
+S101,110066,Breast cancer
+S104,110067,Drug consumption
+S108,110068,Suicide
+S105,110069,Bladder cancer
+S103,110070,Food allergy
+S104,110071,Whiplash
+S101,110072,Kidney cancer
+S108,110073,Bladder cancer
+S101,110074,Whiplash
+S110,110075,Whiplash
+S105,110076,Kidney cancer
+S103,110077,Whiplash
+S101,110078,Dengue
+S108,110079,Kidney cancer
+S103,110080,Dengue
+S110,110081,Suicide
+S105,110082,Sunbathing
+S101,110083,Bladder cancer
+S109,110084,Galactosemia
+S104,110085,Galactosemia
+S105,110086,Suicide
+S109,110087,Breast cancer
+S102,110088,Head banging
+S102,110089,Head banging
+S109,110090,Food allergy
+S109,110091,Whiplash
+S103,110092,Anthrax
+S101,110093,Bladder cancer
+S108,110094,Food allergy
+S107,110095,Sunbathing
+S109,110096,Dengue
+S110,110097,Breast cancer
+S104,110098,Dengue
+S107,110099,Suicide
+S108,110100,Suicide

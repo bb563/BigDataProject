@@ -1,0 +1,17 @@
+disease_name,Subgrp_id
+Cancer,S109
+Cancer,S112
+HIV/AIDS,S109
+HIV/AIDS,S103
+Alzheimer's,S109
+Alzheimer's,S112
+Parkinson's,S107
+Parkinson's,S109
+ALS,S109
+Heart Disease,S107
+Diabetes,S103
+Diabetes,S107
+Chronic Kidney Disease,S112
+Chronic Kidney Disease,S103
+Hepatitis,S109
+Multiple Sclerosis,S109

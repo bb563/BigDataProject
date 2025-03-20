@@ -1,0 +1,17 @@
+disease_name,subgroup_id,weight,cause_description
+Cancer,S109,0.4,"Infectious agents (e.g., HPV, Hepatitis B/C)"
+Cancer,S112,0.3,Autoimmune dysfunction or neurological factors
+HIV/AIDS,S109,0.9,"Infectious agents (HIV virus transmission via blood, sexual contact)"
+HIV/AIDS,S103,0.1,"Lifestyle factors (e.g., unprotected sex, needle sharing)"
+Alzheimer's,S109,0.0,Unknown cause
+Alzheimer's,S112,0.6,Neurological decline or autoimmune factors
+Parkinson's,S107,0.7,"Genetic predisposition or environmental toxins (e.g., pesticides)"
+Parkinson's,S109,0.3,Chronic inflammation or infections
+ALS,S109,0.5,Chronic inflammation or viral triggers
+Heart Disease,S107,0.5,Genetic predisposition or cholesterol buildup
+Diabetes,S103,0.6,"Lifestyle factors (e.g., obesity, sedentary behavior)"
+Diabetes,S107,0.4,Genetic predisposition
+Chronic Kidney Disease,S112,0.5,"Autoimmune conditions (e.g., lupus)"
+Chronic Kidney Disease,S103,0.5,"Lifestyle factors (e.g., high salt intake, dehydration)"
+Hepatitis,S109,0.8,"Infectious agents (e.g., Hepatitis A/B/C viruses)"
+Multiple Sclerosis,S109,0.6,"Infectious agents (e.g., Epstein-Barr virus)"
