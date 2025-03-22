@@ -6,8 +6,27 @@ import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.ml.evaluation.RegressionEvaluator
 
-case class Patient(birthDate: String, gender: String, disease: String, subgroupId: String)
-case class DiseaseGroup(disease: String, subgroupId: String, weight: Double, causeDescription: String)
+// Cập nhật case class để thêm country
+case class Patient(
+                    birthDate: String,
+                    gender: String,
+                    disease: String,
+                    subgroupId: String,
+                    region: String,
+                    incomeLevel: String,
+                    smokingStatus: String,
+                    bmi: Double,
+                    comorbidity: Int,
+                    country: String
+                  )
+
+case class DiseaseGroup(
+                         disease: String,
+                         subgroupId: String,
+                         weight: Double,
+                         causeDescription: String,
+                         riskFactor: String
+                       )
 
 class DiseaseAnalysis(spark: SparkSession, patientsPath: String, diseaseGroupsPath: String) {
   import spark.implicits._
@@ -23,6 +42,10 @@ class DiseaseAnalysis(spark: SparkSession, patientsPath: String, diseaseGroupsPa
     .withColumnRenamed("patient_gender", "gender")
     .withColumnRenamed("disease_name", "disease")
     .withColumnRenamed("subgroup_id", "subgroupId")
+    .withColumnRenamed("income_level", "incomeLevel")
+    .withColumnRenamed("smoking_status", "smokingStatus")
+    .withColumn("bmi", col("bmi").cast("double"))
+    .withColumn("comorbidity", col("comorbidity").cast("int"))
     .as[Patient]
 
   private val diseaseGroupsDS: Dataset[DiseaseGroup] = spark.read
@@ -32,6 +55,7 @@ class DiseaseAnalysis(spark: SparkSession, patientsPath: String, diseaseGroupsPa
     .withColumnRenamed("subgroup_id", "subgroupId")
     .withColumn("weight", col("weight").cast("double"))
     .withColumnRenamed("cause_description", "causeDescription")
+    .withColumnRenamed("risk_factor", "riskFactor")
     .as[DiseaseGroup]
 
   // Chức năng 1: Top 10 bệnh nan y phổ biến nhất
@@ -179,5 +203,123 @@ class DiseaseAnalysis(spark: SparkSession, patientsPath: String, diseaseGroupsPa
 
     println(s"Prevalence of '$topDisease' by Age Group (percentage out of $totalTopDiseasePatients patients with this disease):")
     ageGroups.show(truncate = false)
+  }
+
+  // Chức năng 6: Phân tích đặc điểm dân số học (Patient Demographics) - Thêm country
+  def patientDemographics(): Unit = {
+    val topDisease = patientsDS.groupBy($"disease")
+      .agg(count("*").as("patient_count"))
+      .orderBy(desc("patient_count"))
+      .limit(1)
+      .select("disease")
+      .first()
+      .getString(0)
+
+    val totalPatients = patientsDS.filter($"disease" === topDisease).count()
+
+    // Phân tích theo country
+    val byCountry = patientsDS.filter($"disease" === topDisease)
+      .groupBy($"country")
+      .agg(count("*").as("patient_count"))
+      .withColumn("percentage", (col("patient_count") * 100.0) / totalPatients)
+      .orderBy(desc("patient_count"))
+
+    // Phân tích theo region
+    val byRegion = patientsDS.filter($"disease" === topDisease)
+      .groupBy($"region")
+      .agg(count("*").as("patient_count"))
+      .withColumn("percentage", (col("patient_count") * 100.0) / totalPatients)
+      .orderBy(desc("patient_count"))
+
+    // Phân tích theo income_level
+    val byIncome = patientsDS.filter($"disease" === topDisease)
+      .groupBy($"incomeLevel")
+      .agg(count("*").as("patient_count"))
+      .withColumn("percentage", (col("patient_count") * 100.0) / totalPatients)
+      .orderBy(desc("patient_count"))
+
+    // Phân tích theo gender
+    val byGender = patientsDS.filter($"disease" === topDisease)
+      .groupBy($"gender")
+      .agg(count("*").as("patient_count"))
+      .withColumn("percentage", (col("patient_count") * 100.0) / totalPatients)
+      .orderBy(desc("patient_count"))
+
+    println(s"Demographics for the most common disease '$topDisease' (Total patients: $totalPatients):")
+    println("By Country:")
+    byCountry.show(truncate = false)
+    println("By Region:")
+    byRegion.show(truncate = false)
+    println("By Income Level:")
+    byIncome.show(truncate = false)
+    println("By Gender:")
+    byGender.show(truncate = false)
+  }
+
+  // Chức năng 7: Yếu tố nguy cơ liên quan đến bệnh mãn tính (Risk Factors)
+  def riskFactorsAnalysis(): Unit = {
+    val topDisease = patientsDS.groupBy($"disease")
+      .agg(count("*").as("patient_count"))
+      .orderBy(desc("patient_count"))
+      .limit(1)
+      .select("disease")
+      .first()
+      .getString(0)
+
+    val totalPatients = patientsDS.filter($"disease" === topDisease).count()
+
+    // Lấy yếu tố nguy cơ từ diseaseGroupsDS
+    val riskFactorsFromGroups = diseaseGroupsDS.filter($"disease" === topDisease)
+      .select($"subgroupId", $"riskFactor", $"weight")
+
+    // Đếm số bệnh nhân theo subgroupId và smoking_status
+    val patientRiskFactors = patientsDS.filter($"disease" === topDisease)
+      .groupBy($"subgroupId", $"smokingStatus")
+      .agg(count("*").as("patient_count"))
+
+    // Join và tính tỷ lệ
+    val riskAnalysis = riskFactorsFromGroups
+      .join(patientRiskFactors, Seq("subgroupId"), "left_outer")
+      .withColumn("actual_percentage", (col("patient_count") * 100.0) / totalPatients)
+      .withColumn("estimated_percentage", col("weight") * 100)
+      .select(
+        $"subgroupId",
+        $"riskFactor",
+        $"smokingStatus",
+        $"estimated_percentage".as("estimated_contribution_%"),
+        $"actual_percentage".as("actual_contribution_%")
+      )
+      .orderBy(desc("actual_contribution_%"))
+
+    println(s"Risk Factors for the most common disease '$topDisease' (Total patients: $totalPatients):")
+    println("Risk factors with estimated (from literature) and actual (from patient data) contributions:")
+    riskAnalysis.show(truncate = false)
+  }
+
+  // Chức năng 8: Xác định nhóm bệnh nhân nguy cơ cao (High-Risk Patient Populations)
+  def highRiskPatients(): Unit = {
+    val topDisease = patientsDS.groupBy($"disease")
+      .agg(count("*").as("patient_count"))
+      .orderBy(desc("patient_count"))
+      .limit(1)
+      .select("disease")
+      .first()
+      .getString(0)
+
+    // Xác định bệnh nhân nguy cơ cao: BMI > 30 (béo phì), có hút thuốc, và có bệnh đồng mắc
+    val highRisk = patientsDS.filter($"disease" === topDisease)
+      .filter($"bmi" > 30 && $"smokingStatus" === "Yes" && $"comorbidity" >= 1)
+      .withColumn("age", ageUDF($"birthDate"))
+      .groupBy($"region", $"incomeLevel", $"gender")
+      .agg(
+        count("*").as("high_risk_count"),
+        avg("bmi").as("avg_bmi"),
+        avg("comorbidity").as("avg_comorbidity")
+      )
+      .orderBy(desc("high_risk_count"))
+
+    println(s"High-Risk Patient Populations for '$topDisease':")
+    println("Criteria: BMI > 30, Smokes, and has at least 1 comorbidity")
+    highRisk.show(truncate = false)
   }
 }

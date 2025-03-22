@@ -1,0 +1,17 @@
+disease_name,subgroup_id,weight,cause_description,risk_factor
+Cancer,S109,0.4,"Infectious agents (e.g., HPV, Hepatitis B/C)","HPV infection, Hepatitis"
+Cancer,S112,0.3,Autoimmune dysfunction or neurological factors,Autoimmune disorders
+HIV/AIDS,S109,0.9,"Infectious agents (HIV virus transmission via blood, sexual contact)","Unprotected sex, Needle sharing"
+HIV/AIDS,S103,0.1,"Lifestyle factors (e.g., unprotected sex, needle sharing)",High-risk sexual behavior
+Alzheimer's,S109,0.0,Unknown cause,Unknown risk factor
+Alzheimer's,S112,0.6,Neurological decline or autoimmune factors,"Age, Family history"
+Parkinson's,S107,0.7,"Genetic predisposition or environmental toxins (e.g., pesticides)","Pesticide exposure, Genetic predisposition"
+Parkinson's,S109,0.3,Chronic inflammation or infections,Chronic inflammation
+ALS,S109,0.5,Chronic inflammation or viral triggers,Viral infections
+Heart Disease,S107,0.5,Genetic predisposition or cholesterol buildup,"High cholesterol, Hypertension"
+Diabetes,S103,0.6,"Lifestyle factors (e.g., obesity, sedentary behavior)","Obesity, Sedentary lifestyle"
+Diabetes,S107,0.4,Genetic predisposition,Family history
+Chronic Kidney Disease,S112,0.5,"Autoimmune conditions (e.g., lupus)",Autoimmune disorders
+Chronic Kidney Disease,S103,0.5,"Lifestyle factors (e.g., high salt intake, dehydration)","High salt intake, Dehydration"
+Hepatitis,S109,0.8,"Infectious agents (e.g., Hepatitis A/B/C viruses)","Contaminated water, Blood transfusion"
+Multiple Sclerosis,S109,0.6,"Infectious agents (e.g., Epstein-Barr virus)",Viral infections

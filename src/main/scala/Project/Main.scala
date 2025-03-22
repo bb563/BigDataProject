@@ -12,9 +12,9 @@ object Main {
       .master("local[*]")
       .getOrCreate()
 
-    // Paths to improved data files
-    val patientsPath = "data_demo_2/patients_vn.csv"
-    val diseaseGroupsPath = "data_demo_2/disease_groups_vn.csv"
+    // Paths to extended data files
+    val patientsPath = "data_demo_3/patients_vn_extended_with_country.csv"
+    val diseaseGroupsPath = "data_demo_3/disease_groups_vn_extended.csv"
 
     // Create DiseaseAnalysis instance
     val analysis = new DiseaseAnalysis(spark, patientsPath, diseaseGroupsPath)
@@ -28,14 +28,17 @@ object Main {
         println("3. Causes of Top Disease")
         println("4. Age and Gender Distribution of Top Disease")
         println("5. Prevalence of Top Disease by Age Group")
-        println("6. Exit")
-        print("Enter your choice (1-6): ")
+        println("6. Patient Demographics")
+        println("7. Risk Factors Analysis")
+        println("8. High-Risk Patient Populations")
+        println("9. Exit")
+        print("Enter your choice (1-9): ")
 
         // Use Try to safely parse the input
         val choice = Try(StdIn.readLine().trim.toInt) match {
           case Success(value) => value
           case Failure(_) =>
-            println("Invalid input! Please enter a number between 1 and 6.")
+            println("Invalid input! Please enter a number between 1 and 9.")
             -1
         }
 
@@ -45,11 +48,14 @@ object Main {
           case 3 => analysis.causesOfTopDisease()
           case 4 => analysis.ageGenderDistribution()
           case 5 => analysis.ageGroupPrevalence()
-          case 6 =>
+          case 6 => analysis.patientDemographics()
+          case 7 => analysis.riskFactorsAnalysis()
+          case 8 => analysis.highRiskPatients()
+          case 9 =>
             println("Exiting program...")
             spark.stop()
             System.exit(0)
-          case _ if choice != -1 => println("Invalid choice! Please enter a number between 1 and 6.")
+          case _ if choice != -1 => println("Invalid choice! Please enter a number between 1 and 9.")
           case _ => // Already handled in Try block
         }
       } catch {
